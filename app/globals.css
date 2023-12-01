@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --hd-ft-total: 104px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,4 +25,10 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+/* spacer so footer is always at or below bottom of page set the var in root to match nav + footer height*/
+.footer-v-spacer {
+  min-height: calc(100vh - var(--hd-ft-total));
+  display: flex;
 }
