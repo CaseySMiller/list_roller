@@ -4,33 +4,36 @@ import { useState, useEffect, useRef } from "react";
 import { Button, Card } from "flowbite-react";
 
 const listArray = [
-  "Brown, Laura",
-  "Christ, Ethan",
-  "Cook, Spencer",
-  "Creger, Chance",
-  "Edin, Erik",
-  "Glotfelty, Bryn",
-  "Goss, Daniel",
-  "Kavanagh, Halden",
-  "Latimer, Gabriel",
-  "Lyman, Aaron",
-  "Mulville, Patrick",
-  "Short, Zachary",
-  "Wilson, Maguire",
+  "Laura Brown",
+  "Ethan Christ",
+  "Spencer Cook",
+  "Chance Creger",
+  "Erik Edin",
+  "Bryn Glotfelty",
+  "Daniel Goss",
+  "Halden Kavanagh",
+  "Gabriel Latimer",
+  "Aaron Lyman",
+  "Patrick Mulville",
+  "Zachary Short",
+  "Maguire Wilson",
 ];
 
 export default function Home() {
-  const pipEls = useRef(new Array());
-  // set winner state
-  const [winner, setWinner] = useState("")
+  const pipEls = [];
+  for (let i = 0; i < listArray.length; i++) {
+    pipEls.push(useRef());
+  }
+
+  const [winner, setWinner] = useState("");
 
   const rollHandler = async () => {
-    const min = 4;
+    const min = 3;
     const max = 7;
     const randomRoll = Math.floor(Math.random() * (max - min) + min);
+    console.log(`rolling ${randomRoll} times.`);
     for (let i = 0; i < randomRoll; i++) {
       await roll();
-      console.log(`rolling ${randomRoll} times.`);
       if (i === randomRoll - 1) {
         win();
       }
@@ -38,23 +41,24 @@ export default function Home() {
   };
 
   async function roll() {
-    const rollTime = 80 * (pipEls.current.length + 1);
-    pipEls.current.forEach((pip, i) => {
+    const rollTime = 80 * (pipEls.length + 1);
+    pipEls.forEach((pip, i) => {
       setTimeout(function () {
-        pip.classList.add("rolling");
+        pip.current.classList.add("rolling");
         setTimeout(function () {
-          pip.classList.remove("rolling");
+          pip.current.classList.remove("rolling");
         }, 80);
       }, 80 * i + 1);
     });
-    return new Promise((resolve) => setTimeout(resolve, rollTime))
-  };
+    return new Promise((resolve) => setTimeout(resolve, rollTime));
+  }
 
   async function win() {
     console.log("winning");
-    const winIndex = Math.floor(Math.random() * pipEls.current.length);
-    console.log(pipEls.current[winIndex].innerHTML);
-    setWinner(pipEls.current[winIndex].innerHTML)
+    const winIndex = Math.floor(Math.random() * pipEls.length);
+    console.log(pipEls[winIndex].current.innerHTML);
+    setWinner(pipEls[winIndex].current.innerHTML);
+    alert(`🎉🎉🎉 ${winner} wins! 🎉🎉🎉`);
   }
 
   return (
@@ -66,7 +70,7 @@ export default function Home() {
         <ol className="list-decimal font-normal border-b ps-12 pb-3 text-gray-700 dark:text-gray-400">
           {listArray.map((item, index) => (
             <li
-              ref={pipEls.current.length <= listArray.length ? (e) => pipEls.current.push(e) : null}
+              ref={pipEls[index]}
               className="itsAPip rounded w-full"
               key={`listItem${index + 1}`}
             >
