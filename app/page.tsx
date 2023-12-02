@@ -21,6 +21,8 @@ const listArray = [
 ];
 
 export default function Home() {
+  // const winBtnEl = useRef(null);
+  const rollBtnEl = useRef(null);
   const pipEls = [];
   for (let i = 0; i < listArray.length; i++) {
     pipEls.push(useRef());
@@ -30,11 +32,12 @@ export default function Home() {
   const [openModal, setOpenModal] = useState(false);
 
   const winConfirmHandler = () => {
-    console.log("winConfirm");
+    rollBtnEl.current.removeAttribute("disabled")
     setOpenModal(false);
   }
 
   const rollHandler = async () => {
+    rollBtnEl.current.setAttribute("disabled", true)
     const min = 3;
     const max = 7;
     const randomRoll = Math.floor(Math.random() * (max - min) + min);
@@ -65,7 +68,7 @@ export default function Home() {
     const winIndex = Math.floor(Math.random() * pipEls.length);
     console.log(pipEls[winIndex].current.innerHTML);
     setWinner(pipEls[winIndex].current.innerHTML);
-    alert(`🎉🎉🎉 ${winner} wins! 🎉🎉🎉`);
+    setOpenModal(true);
   }
 
   return (
@@ -86,11 +89,11 @@ export default function Home() {
               </li>
             ))}
           </ol>
-          <Button color="light" onClick={rollHandler}>
+          <Button color="light" onClick={rollHandler} ref={rollBtnEl}>
             🎲🎲🎲 Roll 🎲🎲🎲
           </Button>
         </Card>
-        <Button onClick={() => setOpenModal(true)}>Toggle modal</Button>
+        {/* <Button onClick={() => setOpenModal(true)}>Toggle modal</Button> */}
       </div>
 
       {/* Modal Code */}
@@ -111,9 +114,10 @@ export default function Home() {
             size='xl'
             gradientDuoTone='purpleToBlue' 
             className="mx-auto" 
+            // ref={winBtnEl}
             onClick={winConfirmHandler}
           >
-            🎲🎲🎲 {winner} Wins! 🎲🎲🎲
+            🎉 {winner} Wins! 🎉
           </Button>
         </Modal.Footer>
       </Modal>
