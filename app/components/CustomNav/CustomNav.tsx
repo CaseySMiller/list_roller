@@ -8,9 +8,9 @@ function CustomNav() {
     <Navbar fluid rounded>
       <Navbar.Brand as={Link} href="/">
         <img
-          src="/images/icons/icon-192x192.png"
+          src="/images/icons/icon-192.png"
           className="mr-3 h-6 sm:h-9"
-          alt="Flowbite React Logo"
+          alt="Alien Logo"
         />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
           List your Luck!

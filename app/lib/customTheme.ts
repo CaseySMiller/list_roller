@@ -11,13 +11,6 @@ const customTheme ={
   //   },
   // },
 
-  // extends: {
-  //   button: {
-  //     gradientDuoTone: {
-  //       win:"text-white bg-gradient-to-br from-indigo-400 to-cyan-600 enabled:hover:bg-gradient-to-bl focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800",
-  //     }
-  //   }
-  // }
   modal: {
     body: {
       base: "p-0 flex-1 overflow-clip",
