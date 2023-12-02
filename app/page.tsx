@@ -21,9 +21,8 @@ const listArray = [
 ];
 
 export default function Home() {
-  // const winBtnEl = useRef(null);
-  const rollBtnEl = useRef(null);
-  const pipEls = [];
+  const rollBtnEl: any = useRef(null);
+  const pipEls: any = [];
   for (let i = 0; i < listArray.length; i++) {
     pipEls.push(useRef());
   }
@@ -32,12 +31,12 @@ export default function Home() {
   const [openModal, setOpenModal] = useState(false);
 
   const winConfirmHandler = () => {
-    rollBtnEl.current.removeAttribute("disabled")
+    rollBtnEl.current ? rollBtnEl.current.removeAttribute("disabled") : null;
     setOpenModal(false);
   }
 
   const rollHandler = async () => {
-    rollBtnEl.current.setAttribute("disabled", true)
+    rollBtnEl.current ? rollBtnEl.current.setAttribute("disabled", "") : null;
     const min = 3;
     const max = 7;
     const randomRoll = Math.floor(Math.random() * (max - min) + min);
@@ -52,7 +51,7 @@ export default function Home() {
 
   async function roll() {
     const rollTime = 80 * (pipEls.length + 1);
-    pipEls.forEach((pip, i) => {
+    pipEls.forEach((pip: any, i: any) => {
       setTimeout(function () {
         pip.current.classList.add("rolling");
         setTimeout(function () {
@@ -89,7 +88,11 @@ export default function Home() {
               </li>
             ))}
           </ol>
-          <Button color="light" onClick={rollHandler} ref={rollBtnEl}>
+          <Button 
+          color="light" 
+          onClick={rollHandler} 
+          ref={rollBtnEl.current ? rollBtnEl : undefined}
+          >
             🎲🎲🎲 Roll 🎲🎲🎲
           </Button>
         </Card>
@@ -114,7 +117,6 @@ export default function Home() {
             size='xl'
             gradientDuoTone='purpleToBlue' 
             className="mx-auto" 
-            // ref={winBtnEl}
             onClick={winConfirmHandler}
           >
             🎉 {winner} Wins! 🎉
