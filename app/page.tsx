@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Button, Card, Modal } from "flowbite-react";
+import { json } from "stream/consumers";
 
 const listArray = [
   "Laura Brown",
@@ -29,7 +29,29 @@ export default function Home() {
 
   const [winner, setWinner] = useState("Casey");
   const [openModal, setOpenModal] = useState(false);
-
+  const [wonArray, setWonArray] = useState<number[]>([]);
+  
+  useEffect(() => {
+    const checkLocalStorage = async () => {
+      console.log("checking local storage");
+      const dbWinCheck = await localStorage.getItem("wonArray");
+      const localWonArray = dbWinCheck ? JSON.parse(dbWinCheck) : null;
+      // if local storage found, set wonArray to localWonArray
+      if (localWonArray && localWonArray.length && localWonArray.length > wonArray.length) {
+        console.log("local storage found");
+        setWonArray(localWonArray);
+        // map localWonArray to pipEls and add winner class
+        localWonArray.forEach((item: number) => {
+          pipEls[item].current.classList.add("winner");
+        });
+      } else { // if no local storage found, set local storage to wonArray
+        console.log("no local storage found");
+        localStorage.setItem("wonArray", JSON.stringify(wonArray));
+      }
+    }
+    checkLocalStorage();
+  }, [wonArray]);
+  
   const winConfirmHandler = () => {
     rollBtnEl.current ? rollBtnEl.current.removeAttribute("disabled") : null;
     setOpenModal(false);
@@ -65,10 +87,21 @@ export default function Home() {
   async function win() {
     console.log("winning");
     const winIndex = Math.floor(Math.random() * pipEls.length);
-    console.log(pipEls[winIndex].current.innerHTML);
-    setWinner(pipEls[winIndex].current.innerHTML);
-    setOpenModal(true);
+    if (!pipEls[winIndex].current.classList.contains("winner")) {
+      console.log(pipEls[winIndex].current.innerHTML);
+      setWinner(pipEls[winIndex].current.innerHTML);
+      setOpenModal(true);
+      // updateWins(winIndex);
+      pipEls[winIndex].current.classList.add("winner");
+      setWonArray([...wonArray, winIndex]);      
+    } else {
+      console.log("already won, rolling again");
+      return win();
+    }
   }
+
+  // async function updateWins(i: number) {
+  // }
 
   return (
     <>

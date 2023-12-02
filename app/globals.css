@@ -37,3 +37,10 @@ body {
   background-color: rgb(53,83,168);
   color: whitesmoke;
 }
+
+.winner::before {
+  content: "🏆";
+}
+.winner::after {
+  content: "🏆";
+} 
