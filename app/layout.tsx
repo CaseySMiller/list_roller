@@ -30,7 +30,7 @@ export default function RootLayout({
       <Flowbite theme={{ theme: customFlowbiteTheme }}>
         <body className={`dark ${inter.className}`}>
           <CustomNav />
-          <div className="footer-v-spacer">{children}</div>
+          <main className="footer-v-spacer">{children}</main>
           <CustomFooter />
         </body>
       </Flowbite>
