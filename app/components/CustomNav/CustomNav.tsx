@@ -13,7 +13,7 @@ function CustomNav() {
           alt="Flowbite React Logo"
         />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          We Come In Peace
+          List your Luck!
         </span>
       </Navbar.Brand>
       <Navbar.Toggle />

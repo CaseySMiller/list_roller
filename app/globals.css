@@ -32,3 +32,8 @@ body {
   min-height: calc(100vh - var(--hd-ft-total));
   display: flex;
 }
+
+.rolling {
+  background-color: rgb(53,83,168);
+  color: whitesmoke;
+}
