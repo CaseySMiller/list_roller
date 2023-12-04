@@ -111,7 +111,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="container my-6">
+      <div className="container my-6 mx-auto">
         <Card className="max-w-md w-2/3 mx-auto">
           <FiRefreshCcw onClick={resetHandler} className="h-7 w-7 opacity-70 hover:cursor-pointer hover:opacity-80" />
           <h5 className="text-2xl text-center pt-0 pb-2 mt-0 border-b font-bold text-gray-900 dark:text-white">

@@ -24,12 +24,12 @@ function CustomNav() {
         <Navbar.Link as={Link} href="/test">
           About
         </Navbar.Link>
-        <Navbar.Link as={Link} href="/test">
+        {/* <Navbar.Link as={Link} href="/test">
           Services
         </Navbar.Link>
         <Navbar.Link as={Link} href="/test">
           Contact
-        </Navbar.Link>
+        </Navbar.Link> */}
 
         {/* <Dropdown inline label="Dropdown" dismissOnClick={false}>
           <Dropdown.Item className="right-60" ><Link href='/test'>Dashboard</Link></Dropdown.Item>
