@@ -21,8 +21,8 @@ function CustomNav() {
         <Navbar.Link href="/" active>
           Home
         </Navbar.Link>
-        <Navbar.Link as={Link} href="/test">
-          About
+        <Navbar.Link as={Link} href="/groups">
+          Groups
         </Navbar.Link>
         {/* <Navbar.Link as={Link} href="/test">
           Services
