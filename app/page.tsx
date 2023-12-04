@@ -98,7 +98,7 @@ export default function Home() {
   async function win() {
     const winIndex = Math.floor(Math.random() * pipEls.length);
     if (!pipEls[winIndex].current.classList.contains("winner")) {
-      console.log(`${pipEls[winIndex].current.innerHTML} wins!}`);
+      console.log(`${pipEls[winIndex].current.innerHTML} wins!`);
       setWinner(pipEls[winIndex].current.innerHTML);
       setOpenModal(true);
       pipEls[winIndex].current.classList.add("winner");
