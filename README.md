@@ -36,7 +36,7 @@
   
   ## Screenshot
   
-  ![screenshot](./assets/screenshot.png)
+  ![screenshot](./assets/Screenshot.png)
 
   ## Deployed app
 
