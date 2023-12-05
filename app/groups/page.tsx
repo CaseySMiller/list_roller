@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ListGroup, Table, Dropdown, Select } from "flowbite-react";
+import { useState, useEffect } from "react";
+import { ListGroup, Table, Button, Select } from "flowbite-react";
 
 const listArray = [
   "Laura Brown",
@@ -31,6 +31,16 @@ const groupsDefault: Group[] = [
 const Groups = () => {
   const [groups, setGroups] = useState(groupsDefault);
 
+  function findGroup(item: string) {
+    let groupIndex = -1;
+    groups.forEach((group: Group, index: number) => {
+      if (group.items.includes(item)) {
+        groupIndex = index;
+      }
+    });
+    return groupIndex;
+  }
+
   const handleSelect = (e: any) => {
     const newGroups = [...groups];
     const val = e.target.value.split(' ');
@@ -46,6 +56,24 @@ const Groups = () => {
     setGroups(newGroups);
   };
 
+  const handleSave = () => {
+    console.log('save');
+    localStorage.setItem("groupsArr", JSON.stringify(groups));
+    
+  }
+
+  useEffect(() => {
+    const checkLocalStorage = async () => {
+      const dbGroupsCheck = await localStorage.getItem("groupsArr");
+      const localGroupsArr = dbGroupsCheck ? JSON.parse(dbGroupsCheck) : null;
+      // if local storage found, set groups to localGroupsArr
+      if (localGroupsArr) {
+        setGroups(localGroupsArr);
+      } 
+    };
+    checkLocalStorage();
+  }, []);
+
   return (
     <div className="container mx-auto columns-1">
       <div className="md:w-1/2 mx-auto py-6 ">
@@ -56,12 +84,14 @@ const Groups = () => {
           </Table.Head>
           <Table.Body>
             {listArray.map((item, index) => {
+              const groupIndex = findGroup(item);
               return (
                 <Table.Row key={`listItem${index + 1}`}>
                   <Table.Cell>{item}</Table.Cell>
                   <Table.Cell>
                     <Select 
                       onChange={handleSelect}
+                      value={groupIndex > -1 ? `${groupIndex+1} ${item}` : ''}
                     >
                       <option value=''></option>
                       <option value={`1 ${item}`}>Group 1</option>
@@ -75,13 +105,20 @@ const Groups = () => {
             })}
           </Table.Body>
         </Table>
+        <Button 
+          onClick={handleSave}
+          color="light" 
+          className="mx-auto mt-3"
+        >
+          Save
+        </Button>
       </div>
-      <div className="grid grid-cols-4 pb-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 pb-6">
         <div className="">
           <h5 className="text-center">Group 1</h5>
           <ListGroup className="w-48 mx-auto">
             {groups[0].items.map((item: string, index: number) => (
-              <ListGroup.Item>{item}</ListGroup.Item>
+              <ListGroup.Item key={index}>{item}</ListGroup.Item>
             ))}
           </ListGroup>
         </div>
@@ -89,7 +126,7 @@ const Groups = () => {
           <h5 className="text-center">Group 2</h5>
           <ListGroup className="w-48 mx-auto">
           {groups[1].items.map((item: string, index: number) => (
-              <ListGroup.Item>{item}</ListGroup.Item>
+              <ListGroup.Item key={index}>{item}</ListGroup.Item>
             ))}
           </ListGroup>
         </div>
@@ -97,7 +134,7 @@ const Groups = () => {
           <h5 className="text-center">Group 3</h5>
           <ListGroup className="w-48 mx-auto">
           {groups[2].items.map((item: string, index: number) => (
-              <ListGroup.Item>{item}</ListGroup.Item>
+              <ListGroup.Item key={index}>{item}</ListGroup.Item>
             ))}
           </ListGroup>
         </div>
@@ -105,7 +142,7 @@ const Groups = () => {
           <h5 className="text-center">Group 4</h5>
           <ListGroup className="w-48 mx-auto">
           {groups[3].items.map((item: string, index: number) => (
-              <ListGroup.Item>{item}</ListGroup.Item>
+              <ListGroup.Item key={index}>{item}</ListGroup.Item>
             ))}
           </ListGroup>
         </div>
