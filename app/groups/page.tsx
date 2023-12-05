@@ -21,13 +21,15 @@ const listArray = [
 
 interface Group { name: string, items: Array<string> }
 
+const groupsDefault: Group[] = [
+  { name: "Group 1", items: [] },
+  { name: "Group 2", items: [] },
+  { name: "Group 3", items: [] },
+  { name: "Group 4", items: [] },
+];
+
 const Groups = () => {
-  const [groups, setGroups] = useState([
-    { name: "Group 1", items: [] },
-    { name: "Group 2", items: [] },
-    { name: "Group 3", items: [] },
-    { name: "Group 4", items: [] },
-  ]);
+  const [groups, setGroups] = useState(groupsDefault);
 
   const handleSelect = (e: any) => {
     const newGroups = [...groups];
