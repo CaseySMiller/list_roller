@@ -3,12 +3,9 @@
 import { Footer } from "flowbite-react";
 import Link from "next/link";
 import {
-  BsDribbble,
   BsFacebook,
   BsGithub,
   BsLinkedin,
-  BsInstagram,
-  BsTwitter,
 } from "react-icons/bs";
 import { BiLogoUpwork } from "react-icons/bi";
 

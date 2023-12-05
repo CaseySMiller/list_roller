@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ListGroup, Table, Button, Select } from "flowbite-react";
+import { ListGroup, Table, Button, Select, Toast } from "flowbite-react";
+import { HiCheck } from "react-icons/hi";
 
 const listArray = [
   "Laura Brown",
@@ -33,7 +34,7 @@ const groupsDefault: Group[] = [
 
 const Groups = () => {
   const [groups, setGroups] = useState(groupsDefault);
-
+  const [showToast, setShowToast] = useState(false);
   function findGroup(item: string) {
     let groupIndex = -1;
     groups.forEach((group: Group, index: number) => {
@@ -68,6 +69,10 @@ const Groups = () => {
   const handleSave = () => {
     console.log("save");
     localStorage.setItem("groupsArr", JSON.stringify(groups));
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -156,6 +161,19 @@ const Groups = () => {
           </ListGroup>
         </div>
       </div>
+
+      {/* toast code */}
+      {showToast && (
+        <Toast className="fixed bottom-12 right-5">
+          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
+            <HiCheck className="h-5 w-5" />
+          </div>
+          <div className="ml-3 text-sm font-normal">
+            Groups saved to local storage.
+          </div>
+          <Toast.Toggle onDismiss={() => setShowToast(false)} />
+        </Toast>
+      )}
     </div>
   );
 };
