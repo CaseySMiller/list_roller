@@ -1,28 +1,46 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Button, Card, Modal } from "flowbite-react";
+import { Button, Card, Modal, ListGroup } from "flowbite-react";
 import { FiRefreshCcw } from "react-icons/fi";
 
-
+// const listArray = [
+//   "Laura Brown",
+//   "Ethan Christ",
+//   "Spencer Cook",
+//   "Chance Creger",
+//   "Erik Edin",
+//   "Bryn Glotfelty",
+//   "Daniel Goss",
+//   "Halden Kavanagh",
+//   "Gabriel Latimer",
+//   "Aaron Lyman",
+//   "Patrick Mulville",
+//   "Zachary Short",
+//   "Maguire Wilson",
+// ];
 const listArray = [
-  "Laura Brown",
-  "Ethan Christ",
-  "Spencer Cook",
-  "Chance Creger",
-  "Erik Edin",
-  "Bryn Glotfelty",
-  "Daniel Goss",
-  "Halden Kavanagh",
-  "Gabriel Latimer",
-  "Aaron Lyman",
-  "Patrick Mulville",
-  "Zachary Short",
-  "Maguire Wilson",
+  "Group 1",
+  "Group 2",
+  "Group 3",
+  "Group 4",
+];
+
+interface Group {
+  name: string;
+  items: Array<string>;
+}
+
+const groupsDefault: Group[] = [
+  { name: "Group 1", items: [] },
+  { name: "Group 2", items: [] },
+  { name: "Group 3", items: [] },
+  { name: "Group 4", items: [] },
 ];
 
 export default function Home() {
   const pipEls: any = [];
+  const [groups, setGroups] = useState(groupsDefault);
   const rollBtnEl: any = useRef(null);
   for (let i = 0; i < listArray.length; i++) {
     pipEls.push(useRef());
@@ -33,6 +51,20 @@ export default function Home() {
   const [wonArray, setWonArray] = useState<number[]>([]);
 
   useEffect(() => {
+    // get groups state from local storage
+    const checkLocalStorage = async () => {
+      const dbGroupsCheck = await localStorage.getItem("groupsArr");
+      const localGroupsArr = dbGroupsCheck ? JSON.parse(dbGroupsCheck) : null;
+      // if local storage found, set groups to localGroupsArr
+      if (localGroupsArr) {
+        setGroups(localGroupsArr);
+      }
+    };
+    checkLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    // keep wonArray state in sync with local storage
     const checkLocalStorage = async () => {
       const dbWinCheck = await localStorage.getItem("wonArray");
       const localWonArray = dbWinCheck ? JSON.parse(dbWinCheck) : null;
@@ -71,8 +103,8 @@ export default function Home() {
 
   const rollHandler = async () => {
     rollBtnEl.current ? rollBtnEl.current.setAttribute("disabled", "") : null;
-    const min = 3;
-    const max = 7;
+    const min = 5;
+    const max = 9;
     const randomRoll = Math.floor(Math.random() * (max - min) + min);
     for (let i = 0; i < randomRoll; i++) {
       await roll();
@@ -83,14 +115,14 @@ export default function Home() {
   };
 
   async function roll() {
-    const rollTime = 80 * (pipEls.length + 1);
+    const rollTime = 100 * (pipEls.length + 1);
     pipEls.forEach((pip: any, i: any) => {
       setTimeout(function () {
         pip.current.classList.add("rolling");
         setTimeout(function () {
           pip.current.classList.remove("rolling");
-        }, 80);
-      }, 80 * i + 1);
+        }, 100);
+      }, 100 * i + 1);
     });
     return new Promise((resolve) => setTimeout(resolve, rollTime));
   }
@@ -111,9 +143,12 @@ export default function Home() {
 
   return (
     <>
-      <div className="container my-6 mx-auto">
-        <Card className="max-w-md w-2/3 mx-auto">
-          <FiRefreshCcw onClick={resetHandler} className="h-7 w-7 opacity-70 hover:cursor-pointer hover:opacity-80" />
+      <div className="grid grid-cols-1 md:grid-cols-3 container my-6 mx-auto">
+        <Card className="max-w-md w-full mx-auto h-fit">
+          <FiRefreshCcw
+            onClick={resetHandler}
+            className="h-7 w-7 opacity-70 hover:cursor-pointer hover:opacity-80"
+          />
           <h5 className="text-2xl text-center pt-0 pb-2 mt-0 border-b font-bold text-gray-900 dark:text-white">
             🎲 Time to roll 🎲
           </h5>
@@ -128,14 +163,46 @@ export default function Home() {
               </li>
             ))}
           </ol>
-          <Button
-            color="light"
-            onClick={rollHandler}
-            ref={rollBtnEl}
-          >
+          <Button color="light" onClick={rollHandler} ref={rollBtnEl}>
             🎲🎲🎲 Roll 🎲🎲🎲
           </Button>
         </Card>
+        <div className="md:order-first">
+          <div className="">
+            <h5 className="text-center">Group 1</h5>
+            <ListGroup className="w-48 mx-auto">
+              {groups[0].items.map((item: string, index: number) => (
+                <ListGroup.Item key={index}>{item}</ListGroup.Item>
+              ))}
+            </ListGroup>
+          </div>
+          <div className="">
+            <h5 className="text-center">Group 2</h5>
+            <ListGroup className="w-48 mx-auto">
+              {groups[1].items.map((item: string, index: number) => (
+                <ListGroup.Item key={index}>{item}</ListGroup.Item>
+              ))}
+            </ListGroup>
+          </div>
+        </div>
+        <div>
+          <div className="">
+            <h5 className="text-center">Group 3</h5>
+            <ListGroup className="w-48 mx-auto">
+              {groups[2].items.map((item: string, index: number) => (
+                <ListGroup.Item key={index}>{item}</ListGroup.Item>
+              ))}
+            </ListGroup>
+          </div>
+          <div className="">
+            <h5 className="text-center">Group 4</h5>
+            <ListGroup className="w-48 mx-auto">
+              {groups[3].items.map((item: string, index: number) => (
+                <ListGroup.Item key={index}>{item}</ListGroup.Item>
+              ))}
+            </ListGroup>
+          </div>
+        </div>
       </div>
 
       {/* Modal Code */}

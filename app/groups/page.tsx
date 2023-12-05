@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { ListGroup, Table, Dropdown, Select } from "flowbite-react";
+import { useState, useEffect } from "react";
+import { ListGroup, Table, Button, Select, Toast } from "flowbite-react";
+import { HiCheck } from "react-icons/hi";
 
 const listArray = [
   "Laura Brown",
@@ -19,7 +20,10 @@ const listArray = [
   "Maguire Wilson",
 ];
 
-interface Group { name: string, items: Array<string> }
+interface Group {
+  name: string;
+  items: Array<string>;
+}
 
 const groupsDefault: Group[] = [
   { name: "Group 1", items: [] },
@@ -30,13 +34,29 @@ const groupsDefault: Group[] = [
 
 const Groups = () => {
   const [groups, setGroups] = useState(groupsDefault);
+  const [showToast, setShowToast] = useState(false);
+  function findGroup(item: string) {
+    let groupIndex = -1;
+    groups.forEach((group: Group, index: number) => {
+      if (group.items.includes(item)) {
+        groupIndex = index;
+      }
+    });
+    return groupIndex;
+  }
+
+  const handleReset = () => {
+    console.log("reset");
+    setGroups(groupsDefault);
+    localStorage.setItem("groupsArr", JSON.stringify(groupsDefault));
+  };
 
   const handleSelect = (e: any) => {
     const newGroups = [...groups];
-    const val = e.target.value.split(' ');
-    const index = parseInt(val[0])-1;
+    const val = e.target.value.split(" ");
+    const index = parseInt(val[0]) - 1;
     val.shift();
-    const itemName = val.join(' ');
+    const itemName = val.join(" ");
     // remove item from all groups
     newGroups.forEach((group: Group) => {
       group.items = group.items.filter((item: string) => item !== itemName);
@@ -45,6 +65,27 @@ const Groups = () => {
     newGroups[index].items.push(itemName);
     setGroups(newGroups);
   };
+
+  const handleSave = () => {
+    console.log("save");
+    localStorage.setItem("groupsArr", JSON.stringify(groups));
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    const checkLocalStorage = async () => {
+      const dbGroupsCheck = await localStorage.getItem("groupsArr");
+      const localGroupsArr = dbGroupsCheck ? JSON.parse(dbGroupsCheck) : null;
+      // if local storage found, set groups to localGroupsArr
+      if (localGroupsArr) {
+        setGroups(localGroupsArr);
+      }
+    };
+    checkLocalStorage();
+  }, []);
 
   return (
     <div className="container mx-auto columns-1">
@@ -56,14 +97,16 @@ const Groups = () => {
           </Table.Head>
           <Table.Body>
             {listArray.map((item, index) => {
+              const groupIndex = findGroup(item);
               return (
                 <Table.Row key={`listItem${index + 1}`}>
                   <Table.Cell>{item}</Table.Cell>
                   <Table.Cell>
-                    <Select 
+                    <Select
                       onChange={handleSelect}
+                      value={groupIndex > -1 ? `${groupIndex + 1} ${item}` : ""}
                     >
-                      <option value=''></option>
+                      <option value=""></option>
                       <option value={`1 ${item}`}>Group 1</option>
                       <option value={`2 ${item}`}>Group 2</option>
                       <option value={`3 ${item}`}>Group 3</option>
@@ -75,41 +118,62 @@ const Groups = () => {
             })}
           </Table.Body>
         </Table>
+        <div className="grid grid-cols-2">
+          <Button onClick={handleSave} color="light" className="mx-auto mt-3">
+            Save
+          </Button>
+          <Button onClick={handleReset} color="light" className="mx-auto mt-3">
+            Reset
+          </Button>
+        </div>
       </div>
-      <div className="grid grid-cols-4 pb-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 pb-6">
         <div className="">
           <h5 className="text-center">Group 1</h5>
           <ListGroup className="w-48 mx-auto">
             {groups[0].items.map((item: string, index: number) => (
-              <ListGroup.Item>{item}</ListGroup.Item>
+              <ListGroup.Item key={index}>{item}</ListGroup.Item>
             ))}
           </ListGroup>
         </div>
         <div className="">
           <h5 className="text-center">Group 2</h5>
           <ListGroup className="w-48 mx-auto">
-          {groups[1].items.map((item: string, index: number) => (
-              <ListGroup.Item>{item}</ListGroup.Item>
+            {groups[1].items.map((item: string, index: number) => (
+              <ListGroup.Item key={index}>{item}</ListGroup.Item>
             ))}
           </ListGroup>
         </div>
         <div className="">
           <h5 className="text-center">Group 3</h5>
           <ListGroup className="w-48 mx-auto">
-          {groups[2].items.map((item: string, index: number) => (
-              <ListGroup.Item>{item}</ListGroup.Item>
+            {groups[2].items.map((item: string, index: number) => (
+              <ListGroup.Item key={index}>{item}</ListGroup.Item>
             ))}
           </ListGroup>
         </div>
         <div className="">
           <h5 className="text-center">Group 4</h5>
           <ListGroup className="w-48 mx-auto">
-          {groups[3].items.map((item: string, index: number) => (
-              <ListGroup.Item>{item}</ListGroup.Item>
+            {groups[3].items.map((item: string, index: number) => (
+              <ListGroup.Item key={index}>{item}</ListGroup.Item>
             ))}
           </ListGroup>
         </div>
       </div>
+
+      {/* toast code */}
+      {showToast && (
+        <Toast className="fixed bottom-12 right-5">
+          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
+            <HiCheck className="h-5 w-5" />
+          </div>
+          <div className="ml-3 text-sm font-normal">
+            Groups saved to local storage.
+          </div>
+          <Toast.Toggle onDismiss={() => setShowToast(false)} />
+        </Toast>
+      )}
     </div>
   );
 };
