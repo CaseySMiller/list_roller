@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { Navbar, Dropdown } from "flowbite-react";
+import { Navbar, } from "flowbite-react";
+import { usePathname } from "next/navigation";
 
 function CustomNav() {
+  const pathname = usePathname();
+
   return (
     <Navbar fluid rounded>
       <Navbar.Brand as={Link} href="/">
@@ -18,10 +21,10 @@ function CustomNav() {
       </Navbar.Brand>
       <Navbar.Toggle />
       <Navbar.Collapse>
-        <Navbar.Link href="/" active>
+        <Navbar.Link as={Link} href="/" active={pathname === "/" ? true : false}>
           Home
         </Navbar.Link>
-        <Navbar.Link as={Link} href="/groups">
+        <Navbar.Link as={Link} href="/groups" active={pathname === "/groups" ? true : false}>
           Groups
         </Navbar.Link>
         {/* <Navbar.Link as={Link} href="/test">
