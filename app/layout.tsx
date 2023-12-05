@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeModeScript, CustomFlowbiteTheme, Flowbite } from "flowbite-react";
+import { useState } from "react";
 
 import customTheme from "./lib/customTheme";
 import CustomNav from "./components/CustomNav/CustomNav";
@@ -21,6 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const customFlowbiteTheme: CustomFlowbiteTheme = customTheme;
+
 
   return (
     <html lang="en">
