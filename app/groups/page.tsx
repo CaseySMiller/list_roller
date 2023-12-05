@@ -47,8 +47,8 @@ const Groups = () => {
 
   const handleReset = () => {
     console.log("reset");
-    setGroups(groupsDefault);
     localStorage.setItem("groupsArr", JSON.stringify(groupsDefault));
+    setGroups(groupsDefault);
   };
 
   const handleSelect = (e: any) => {
@@ -89,7 +89,7 @@ const Groups = () => {
 
   return (
     <div className="container mx-auto columns-1">
-      <div className="md:w-1/2 mx-auto py-6 ">
+      <div className="md:w-1/2 mx-auto py-6 px-2 ">
         <Table striped>
           <Table.Head>
             <Table.HeadCell>Name</Table.HeadCell>
