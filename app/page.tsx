@@ -4,27 +4,27 @@ import { useState, useEffect, useRef } from "react";
 import { Button, Card, Modal, ListGroup } from "flowbite-react";
 import { FiRefreshCcw } from "react-icons/fi";
 
-// const listArray = [
-//   "Laura Brown",
-//   "Ethan Christ",
-//   "Spencer Cook",
-//   "Chance Creger",
-//   "Erik Edin",
-//   "Bryn Glotfelty",
-//   "Daniel Goss",
-//   "Halden Kavanagh",
-//   "Gabriel Latimer",
-//   "Aaron Lyman",
-//   "Patrick Mulville",
-//   "Zachary Short",
-//   "Maguire Wilson",
-// ];
 const listArray = [
-  "Group 1",
-  "Group 2",
-  "Group 3",
-  "Group 4",
+  "Laura Brown",
+  "Ethan Christ",
+  "Spencer Cook",
+  "Chance Creger",
+  "Erik Edin",
+  "Bryn Glotfelty",
+  "Daniel Goss",
+  "Halden Kavanagh",
+  "Gabriel Latimer",
+  "Aaron Lyman",
+  "Patrick Mulville",
+  "Zachary Short",
+  "Maguire Wilson",
 ];
+// const listArray = [
+//   "Group 1",
+//   "Group 2",
+//   "Group 3",
+//   "Group 4",
+// ];
 
 interface Group {
   name: string;
